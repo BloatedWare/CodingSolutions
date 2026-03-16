@@ -1,0 +1,42 @@
+class Solution {
+    public int maxArea(int[] height) {
+        int n = height.length;
+        int i = 0, j = n-1, k;
+        boolean newValueFound = false;
+
+        if (n < 2 || n > 100000) {
+            return 0;
+        }
+        while(true) {
+            if(height[i] < height[j]) {
+                for (k = 1; (i+k) < j; ++k) {
+                    if((Math.min(height[i+k], height[j])*(j-i - k)) > height[i]*(j -i)) {
+                        i += k;
+                        newValueFound = true;
+                        break; 
+                    }
+                } 
+                if(!newValueFound) {
+                    //means i -> <- j met and no better solution can be found
+                    return (j - i)* (height[i]);
+                } 
+                newValueFound = false; //reset
+                
+            } else {
+                for (k = 1; (j-k) > i; ++k) {
+                    if((Math.min(height[j-k], height[i])*(j-i - k)) > height[j]*(j -i)) {
+                        j -= k;
+                        newValueFound = true;
+                        break;
+                    }
+                } 
+                if(!newValueFound) {
+                    //means i -> <- j met and no better solution can be found
+                    return (j - i)* (height[j]);
+                } 
+                newValueFound = false;
+            }
+        }
+
+    }
+}
